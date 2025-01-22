@@ -1,0 +1,32 @@
+menu = {
+    "noodles " : 70,
+    "maggie" : 30,
+    "manchurian": 80,
+    "cold_coffee" : 50,
+    "momos" : 40,
+}
+print("--------/JHAKAS FOOD!--------")
+print("noodles: 70\nmaggie: 30\nmanchurian: 80\ncold_coffee: 50\nmomos: 40" )\
+
+order_total = 0
+
+item1 = input("ENTER WHAT YOU WANT TO HAVE -: ")
+if item1 in menu:
+    order_total += menu[item1]
+    print(f"your item {item1} has been added to your order")
+else:
+    print(f"your ordered item {item1} is not available")
+
+item2 = input("WOULD YOU LIKE ORDER ANYTHING ELSE ?(yes/no)")
+if item2 == "yes":
+    order2 = input("PLEASE GIVE YOUR OrDER-: ")
+    if order2 in menu:
+        order_total += menu[order2]
+        print(f"your item {order2} has been added to your added")
+    else:
+        print(f"your ordered item {order2} is not available")
+
+print("YOUR TOTAL AMOUNT TO PAY IS-",order_total)
+print("thank you for coming 'VISIT AGAIN'")
+
+
