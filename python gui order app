@@ -1,0 +1,78 @@
+# importing specific modules
+import tkinter as tk
+from tkinter import messagebox
+from time import strftime
+
+# creating window for cafe manage and digital clock
+
+root = tk.Tk()# activating tkinter module
+root.title("digital clock & cafe")# giving title head of the gui 
+root.geometry("400x500")# giving width and height
+root.config(bg="blue") # giving the color of window
+
+# giving the time updation of clock
+
+def update_time():
+    time_string = strftime("%H:%M:%S %p\n%d-%m-%y") # giving the date month and year AM/PM
+    clock_label.config(text=time_string)# update the label text with new time
+    clock_label.after(1000, update_time) # this will update the clock every second
+
+clock_label = tk.Label(root, font=("arial", 20, "bold"), bg="brown", fg="white", padx=10, pady=10) # giving padding as padx for x dir and pady for y dir
+clock_label.pack(pady=10) # this centers the table and adds space abv and below
+update_time()
+
+# giving menu to customer
+
+menu = {"momos": 40, "Tea": 20, "poha": 50, "samosa": 30, "kachori": 30} # Indian food dishes
+order = {} # stores the item given by customer
+
+# Updating the total
+
+def update_total():
+    total = sum(menu[item] * qty for item, qty in order.items())
+    total_label.config(text=f"Total : Rs{total:.2f}")
+
+# adding item
+
+def add_item(item):
+    order[item] = order.get(item, 0) + 1 # gets the current quantity of item and +1 is used to add 1 more quantity by 1 click.
+    update_total()
+
+# showing order in a pop-up window
+
+def show_order():
+    if not order:
+        messagebox.showinfo("order", "no items in the order")
+        return
+    order_details = "\n".join([f"{item} * {qty} - Rs{menu[item] * qty:.2f}" for item, qty in order.items()]) # formats it as Item*quantity - price // loop chalayega and puri item ki list show karega.
+    order_details += f"\nTotal: Rs{sum(menu[item] * qty for item, qty in order.items()):.2f}" # adds your order to the order list.
+    messagebox.showinfo("order details", order_details)
+
+# Function to clear the order
+
+def clear_order():
+    order.clear()
+    update_total()
+
+# creating menu buttons to display
+
+menu_frame = tk.Frame(root, bg="yellow")
+menu_frame.pack(pady=10)
+
+for item, price in menu.items():
+    tk.Button(menu_frame, text=f"{item} - Rs{price:.2f}", font=("Arial", 12), width=20, command=lambda i=item: add_item(i)).pack(pady=3) # shows the item name and price
+
+# creating label to show total
+
+total_label = tk.Label(root, text="Total: Rs0.00", font=("Arial", 14, "bold"), bg="red")
+total_label.pack(pady=5)
+
+# creating buttons for showing and clear order
+
+button_frame = tk.Frame(root, bg="magenta")
+button_frame.pack(pady=5)
+# creating buttons for showing and cancelling order
+tk.Button(button_frame, text="show order", font=("arial", 12, "bold"), bg="green", fg="white", width=12, command=show_order).grid(row=0, column=0, padx=5, pady=5)
+tk.Button(button_frame, text="clear order", font=("arial", 12, "bold"), bg="red", fg="white", width=12, command=clear_order).grid(row=0, column=1, padx=5, pady=5)
+
+root.mainloop()# calls the main function to run the program.
